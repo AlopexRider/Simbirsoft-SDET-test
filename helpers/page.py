@@ -40,14 +40,14 @@ class MailLoginPage(BasePage):
 class MailPage(BasePage):
 
     def mails_count_by_subject(self, subject):
-        WebDriverWait(self.driver, 15).until(EC.visibility_of_any_elements_located((By.XPATH, "//span["
+        WebDriverWait(self.driver, 5).until(EC.visibility_of_any_elements_located((By.XPATH, "//span["
                                                                                               "@title='" + subject + "']")))
         mails: list = self.driver.find_elements(By.XPATH,
                                                 "//span[@title='" + subject + "']")
         return len(mails)
 
     def sum_of_mails(self):
-        WebDriverWait(self.driver, 15).until(EC.visibility_of_any_elements_located((By.XPATH, "//span[@title='Проверить, есть ли новые письма (F9)']")))
+        WebDriverWait(self.driver, 5).until(EC.visibility_of_any_elements_located((By.XPATH, "//span[@title='Проверить, есть ли новые письма (F9)']")))
         self.click_page_actions(MailPageLocators.REFRESH_BUTTON)
         mails_summary: list = self.driver.find_elements(By.XPATH, "//span[@class='mail-MessageSnippet-Item mail-MessageSnippet-Item_body js-message-snippet-body']")
         return len(mails_summary)
@@ -63,13 +63,13 @@ class MailPage(BasePage):
 
     def send_mail_action(self, count, count_sum):
         self.click_page_actions(MailPageLocators.CREATE_MAIL_BUTTON)
-        WebDriverWait(self.driver, 15).until(EC.visibility_of_any_elements_located(
+        WebDriverWait(self.driver, 5).until(EC.visibility_of_any_elements_located(
             (By.XPATH, "//div[@class='MultipleAddressesDesktop ComposeRecipients-MultipleAddressField " \
                        "ComposeRecipients-ToField tst-field-to']//div[@class='composeYabbles'] ")))
         self.send_input(MailPageLocators.ADDRESS_FIELD, 'sdettest@yandex.ru')
         self.send_input(MailPageLocators.SUBJECT_FIELD, 'Simbirsoft Тестовое задание. Шевадров')
         text_input = self.driver.find_element_by_xpath(MailPageLocators.MAIL_BODY)
         text_input.send_keys(f'Мы нашли несколько ({count}) писем с начальными условиями в этом ящике! Всего писем в '
-                             f'ящике {count_sum}')
+                             f'ящике: {count_sum}')
         self.click_page_actions(MailPageLocators.SEND_BUTTON)
         self.click_page_actions(MailPageLocators.REFRESH_BUTTON)
