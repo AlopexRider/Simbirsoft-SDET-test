@@ -11,14 +11,13 @@ class TestMailsCount(unittest.TestCase):
     @allure.tag("Шевадров")
     @allure.severity(allure.severity_level.CRITICAL)
     def setUp(self):
-        self.driver = webdriver.Chrome('D:/WebDriver/chromedriver.exe')
+        self.driver = webdriver.Remote(
+            command_executor="http://192.168.0.102:5555/wd/hub",
+            desired_capabilities={"browserName": "chrome", "javascriptEnabled": True})
 
     def test_yandex_mail_counter(self, login="sdettest", password="sdet3008", subject="Simbirsoft Тестовое задание",
                                  second_subject="Simbirsoft Тестовое задание. Шевадров"):
-
-        driver = self.driver = webdriver.Remote(
-            command_executor="http://192.168.0.102:5555/wd/hub",
-            desired_capabilities={"browserName": "chrome", "javascriptEnabled": True})
+        driver = self.driver
         driver.get("https://yandex.ru")
 
         homepage = HomePage(driver)
